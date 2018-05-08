@@ -1,6 +1,7 @@
 IntervalTimer TrebleTime;
 IntervalTimer BassTime;
 
+// Setup up pins and global variables
 const int tPin = 14;
 const int bPin = 22;
 int tstate = LOW;
@@ -11,6 +12,7 @@ int tnote = 0;
 int bnote = 0;
 int phrase = 0;
 
+// Define frequencies in Hz for each note used
 const float d2 = 73.42;
 const float e2 = 82.41;
 const float f2 = 92.50;
@@ -23,12 +25,14 @@ const float d5 = 587.33;
 const float b4 = 493.88;
 const float a4 = 440;
 
+// Define a silent tone as 200 Hz
 const float na = 200;
 
 const int st = 150;  //Sixtenth note time in ms at 100 bpm
 int basscount[24];
 int treblecount[24];
 
+// Notes of the song and time played
 float basspart[] = {g2,g2,g2,g2,g2,a2,b2,b2,b2,b2,b2,b2,a2,a2,a2,a2,a2,f2,e2,e2,e2,e2,d2,d2};
 float basstime[] = { 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2};
 
@@ -36,14 +40,19 @@ float treblepart[] = {na,na,f5,d5,b4,f5,na,f5,d5,a4,f5,na,f5,d5,a4,f5,na,f5,d5,b
 float trebletime[] = { 2, 2, 3, 3, 2, 4, 4, 3, 3, 2, 4, 4, 3, 3, 2, 4, 4, 3, 3, 2, 1, 1, 1, 1};
 
 void setup() {
+
+  // Setup pins and interrupts
   pinMode(tPin, OUTPUT);
   pinMode(bPin, OUTPUT);
   Serial.begin(9600);
   noInterrupts();
   TrebleTime.begin(twave,500000/treblepart[tnote]);
   BassTime.begin(bwave,500000/basspart[bnote]);
-      int sumt = 0;
-    int sumb = 0;
+  
+  
+  // Check counts
+  int sumt = 0;
+  int sumb = 0;
   for(int i=0; i<24; i++) {
     basscount[i] = basstime[i]*st*basspart[i]/500;
     treblecount[i] = trebletime[i]*st*treblepart[i]/500;
@@ -61,6 +70,8 @@ void setup() {
   
 }
 
+
+// Interrupt Service routine for Treble Part
 void twave() {
   if(tcount <= treblecount[tnote]) {
     if(treblepart[tnote] == 200 || tcount >= .8*treblecount[tnote] || phrase < 2) {  // silence
@@ -92,6 +103,8 @@ void twave() {
   }
 }
 
+
+// Interrupt Service routine for Bass Part
 void bwave() {
   if(bcount <= basscount[bnote]) {
     if(basspart[bnote] == 200 || bcount >= .8*basscount[bnote]) {  // silence
