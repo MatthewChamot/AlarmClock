@@ -9,11 +9,11 @@ Because of the interrupt driven speakers, the 7-segment display and both speaker
 
 
 #### Future Work
-* Code for a button needs to be written.
+* ~~Code for a button needs to be written.
 
-* One button to control alarm on/off, snooze, set time and set alarm functionality.
+* ~~One button to control alarm on/off, snooze, set time and set alarm functionality.
 
-* Time is controlled through delays, may need to upgrade to a RTC.
+* ~~Time is controlled through delays, may need to upgrade to a RTC.
 
 * Make it look nice by taking it off the breadboard and into a case.
 
